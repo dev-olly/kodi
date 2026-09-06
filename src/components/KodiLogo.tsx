@@ -1,17 +1,18 @@
-import { FG, sans } from "../theme";
+import { FG, R, sans } from "../theme";
 
-export function KodiLogo({ size = 22 }: { size?: number }) {
+export function KodiLogo({ size = 22, color = FG }: { size?: number; color?: string }) {
   return (
     <span
       style={{
+        fontFamily: sans,
+        fontWeight: 900,
+        fontSize: size,
+        letterSpacing: "-0.04em",
+        color,
         display: "inline-flex",
         alignItems: "baseline",
-        fontFamily: sans,
-        fontWeight: 700,
-        fontSize: size,
-        letterSpacing: "-0.01em",
-        color: FG,
         lineHeight: 1,
+        userSelect: "none",
       }}
     >
       Kod
@@ -21,13 +22,13 @@ export function KodiLogo({ size = 22 }: { size?: number }) {
           aria-hidden="true"
           style={{
             position: "absolute",
-            top: size * -0.08 + "px",
+            top: "1%",
             left: "50%",
             transform: "translateX(-50%)",
-            width: size * 0.18 + "px",
-            height: size * 0.18 + "px",
+            width: "0.17em",
+            height: "0.17em",
             borderRadius: "50%",
-            background: "#E0401C",
+            background: R,
             display: "block",
           }}
         />

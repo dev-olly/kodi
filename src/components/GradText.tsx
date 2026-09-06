@@ -15,9 +15,5 @@ export function GradText({
   children: ReactNode;
   style?: CSSProperties;
 }) {
-  return (
-    <span style={{ display: "inline", ...clip, ...style }}>
-      {children}
-    </span>
-  );
+  return <span style={{ display: "inline", ...clip, ...style }}>{children}</span>;
 }

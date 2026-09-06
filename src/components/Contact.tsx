@@ -1,26 +1,27 @@
-import { type FormEvent, type FocusEvent, useId, useState } from "react";
-import { SERVICES } from "../data/content";
-import { FG, GRAD, LINE, MUTED, sans, serif } from "../theme";
-import { GradText } from "./GradText";
+import { type FocusEvent, type FormEvent, useId, useState } from "react";
+import { PHOTOS, SERVICES } from "../data/content";
+import { useInView } from "../hooks/useInView";
+import { FG, GRAD, GRAD_TEXT, LINE, MUTED, R, sans } from "../theme";
+import { KodiLogo } from "./KodiLogo";
 
 const FIELD = {
-  background: "#0E0E14",
+  background: "#141414",
   border: `1px solid ${LINE}`,
   color: FG,
-  padding: "14px 16px",
+  padding: "13px 16px",
   fontFamily: sans,
   fontWeight: 300,
   fontSize: 14,
   outline: "none",
-  transition: "border-color 0.2s",
+  transition: "border-color .2s",
   width: "100%",
 } as const;
 
 const LABEL = {
   fontFamily: sans,
-  fontWeight: 500,
+  fontWeight: 600,
   fontSize: 10,
-  letterSpacing: "0.18em",
+  letterSpacing: ".2em",
   textTransform: "uppercase" as const,
   color: MUTED,
 };
@@ -47,7 +48,7 @@ function validate(values: FormState) {
 }
 
 function onFieldFocus(e: FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
-  e.currentTarget.style.borderColor = "#E0401C";
+  e.currentTarget.style.borderColor = R;
 }
 
 function onFieldBlur(e: FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
@@ -56,6 +57,7 @@ function onFieldBlur(e: FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTe
 
 export function Contact() {
   const formId = useId();
+  const [ref, inView] = useInView(0.1);
   const [values, setValues] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -64,146 +66,176 @@ export function Contact() {
     e.preventDefault();
     const next = validate(values);
     setErrors(next);
-    if (Object.keys(next).length === 0) {
-      setSubmitted(true);
-    }
+    if (Object.keys(next).length === 0) setSubmitted(true);
   }
 
   return (
-    <section
-      id="contact"
-      className="page-pad"
-      style={{ padding: "140px 40px", position: "relative", overflow: "hidden" }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          bottom: -100,
-          right: -100,
-          width: 500,
-          height: 500,
-          background: "radial-gradient(ellipse, rgba(224,64,28,0.08) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div className="section-inner" style={{ padding: 0, position: "relative", zIndex: 2 }}>
-        <div className="contact-grid">
-          <div>
-            <div
-              style={{
-                fontFamily: sans,
-                fontWeight: 300,
-                fontSize: 11,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: MUTED,
-                marginBottom: 32,
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <span style={{ display: "inline-block", width: 24, height: 1, background: GRAD }} />
-              Contact
-            </div>
-            <h2
-              style={{
-                fontFamily: serif,
-                fontSize: "clamp(40px, 6vw, 88px)",
-                lineHeight: 0.92,
-                color: FG,
-                letterSpacing: "-0.03em",
-                margin: "0 0 40px",
-              }}
-            >
-              Let&apos;s build
-              <br />
-              something
-              <br />
-              <GradText>remarkable.</GradText>
-            </h2>
-            <p
-              style={{
-                fontFamily: sans,
-                fontWeight: 300,
-                fontSize: 15,
-                color: MUTED,
-                lineHeight: 1.8,
-                marginBottom: 48,
-              }}
-            >
-              Tell us about your project. We&apos;ll get back to you within 24 hours.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <a
-                href="mailto:hello@kodi.studio"
+    <section id="contact" style={{ borderTop: `1px solid ${LINE}` }}>
+      <div ref={ref} className="rh" style={{ maxWidth: 1380, margin: "0 auto" }}>
+        <div className="ph" style={{ position: "relative", overflow: "hidden" }}>
+          <img
+            loading="lazy"
+            src={PHOTOS.contact}
+            alt=""
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "brightness(0.28) saturate(0.55)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to right, rgba(9,9,9,.1), rgba(9,9,9,.65))",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              padding: "64px 56px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              zIndex: 2,
+            }}
+          >
+            <KodiLogo size={22} />
+            <div>
+              <h2
                 style={{
                   fontFamily: sans,
-                  fontWeight: 300,
-                  fontSize: 14,
-                  color: MUTED,
-                  textDecoration: "none",
-                  letterSpacing: "0.02em",
-                  transition: "color 0.2s",
+                  fontWeight: 900,
+                  fontSize: "clamp(44px,6.5vw,96px)",
+                  lineHeight: 0.9,
+                  letterSpacing: "-0.045em",
+                  color: FG,
+                  margin: "0 0 28px",
+                  opacity: inView ? 1 : 0,
+                  transform: inView ? "none" : "translateY(24px)",
+                  transition: "all .9s cubic-bezier(.16,1,.3,1) .1s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
               >
-                hello@kodi.studio
-              </a>
-              <a
-                href="tel:+15550000000"
+                Let&apos;s
+                <br />
+                build
+                <br />
+                <span
+                  style={{
+                    background: GRAD_TEXT,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  something.
+                </span>
+              </h2>
+              <div
                 style={{
-                  fontFamily: sans,
-                  fontWeight: 300,
-                  fontSize: 14,
-                  color: MUTED,
-                  textDecoration: "none",
-                  letterSpacing: "0.02em",
-                  transition: "color 0.2s",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  opacity: inView ? 1 : 0,
+                  transition: "opacity .7s ease .4s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
               >
-                +1 (555) 000-0000
-              </a>
+                <a
+                  href="mailto:hello@kodi.studio"
+                  data-h="1"
+                  style={{
+                    fontFamily: sans,
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: MUTED,
+                    textDecoration: "none",
+                    transition: "color .2s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
+                >
+                  hello@kodi.studio
+                </a>
+                <a
+                  href="tel:+15550000000"
+                  data-h="1"
+                  style={{
+                    fontFamily: sans,
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: MUTED,
+                    textDecoration: "none",
+                    transition: "color .2s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
+                >
+                  +1 (555) 000-0000
+                </a>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div
+          className="p48"
+          style={{
+            background: "#0C0C0C",
+            padding: "80px 56px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: sans,
+              fontWeight: 300,
+              fontSize: 14,
+              color: MUTED,
+              lineHeight: 1.75,
+              marginBottom: 40,
+              opacity: inView ? 1 : 0,
+              transition: "opacity .7s ease .2s",
+            }}
+          >
+            Tell us about your project. We&apos;ll respond within 24 hours.
+          </p>
 
           {submitted ? (
             <div
               role="status"
               style={{
-                background: "#0E0E14",
+                background: "#141414",
                 border: `1px solid ${LINE}`,
-                padding: "48px 40px",
-                minHeight: 280,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
+                padding: "40px 32px",
               }}
             >
               <div
                 style={{
                   fontFamily: sans,
-                  fontWeight: 500,
-                  fontSize: 11,
-                  letterSpacing: "0.18em",
+                  fontWeight: 600,
+                  fontSize: 10,
+                  letterSpacing: ".2em",
                   textTransform: "uppercase",
-                  color: "#FF6B3D",
-                  marginBottom: 16,
+                  color: R,
+                  marginBottom: 14,
                 }}
               >
                 Brief received
               </div>
               <h3
                 style={{
-                  fontFamily: serif,
-                  fontSize: 36,
+                  fontFamily: sans,
+                  fontWeight: 900,
+                  fontSize: 32,
                   color: FG,
-                  margin: "0 0 16px",
-                  letterSpacing: "-0.02em",
+                  margin: "0 0 12px",
+                  letterSpacing: "-0.03em",
                 }}
               >
                 Thank you, {values.name.trim()}.
@@ -213,8 +245,19 @@ export function Contact() {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              <div className="contact-name-row">
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 18,
+                opacity: inView ? 1 : 0,
+                transform: inView ? "none" : "translateY(20px)",
+                transition: "all .8s cubic-bezier(.16,1,.3,1) .28s",
+              }}
+            >
+              <div className="r2" style={{ gap: 14 }}>
                 {(
                   [
                     { key: "name", label: "Name", type: "text", placeholder: "Jane Okonkwo" },
@@ -251,19 +294,20 @@ export function Contact() {
                 <select
                   id={`${formId}-department`}
                   name="department"
+                  data-h="1"
                   value={values.department}
                   aria-invalid={Boolean(errors.department)}
                   aria-describedby={errors.department ? `${formId}-department-error` : undefined}
                   onChange={(e) => setValues((v) => ({ ...v, department: e.target.value }))}
-                  style={{ ...FIELD, appearance: "none", cursor: "pointer" }}
+                  style={{ ...FIELD, appearance: "none" }}
                   onFocus={onFieldFocus}
                   onBlur={onFieldBlur}
                 >
-                  <option value="" style={{ background: "#0E0E14" }}>
+                  <option value="" style={{ background: "#141414" }}>
                     Select a department
                   </option>
                   {SERVICES.map((s) => (
-                    <option key={s.name} value={s.name} style={{ background: "#0E0E14" }}>
+                    <option key={s.name} value={s.name} style={{ background: "#141414" }}>
                       {s.num} — {s.name}
                     </option>
                   ))}
@@ -276,7 +320,7 @@ export function Contact() {
               </label>
 
               <label style={{ display: "flex", flexDirection: "column", gap: 9 }}>
-                <span style={LABEL}>Project Brief</span>
+                <span style={LABEL}>Brief</span>
                 <textarea
                   id={`${formId}-brief`}
                   name="brief"
@@ -299,20 +343,21 @@ export function Contact() {
 
               <button
                 type="submit"
+                data-h="1"
                 style={{
                   fontFamily: sans,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   fontSize: 13,
-                  letterSpacing: "0.08em",
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
                   background: GRAD,
                   color: "#fff",
                   padding: "18px",
                   border: "none",
-                  cursor: "pointer",
-                  marginTop: 6,
-                  transition: "opacity 0.2s",
+                  marginTop: 4,
+                  transition: "opacity .2s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.82")}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = ".8")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
                 Send Brief →

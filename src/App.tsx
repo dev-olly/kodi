@@ -1,23 +1,29 @@
 import { ComingSoon } from "./components/ComingSoon";
 import { Contact } from "./components/Contact";
+import { Cursor } from "./components/Cursor";
+import { Departments } from "./components/Departments";
 import { Footer } from "./components/Footer";
 import { Hero } from "./components/Hero";
+import { Manifesto } from "./components/Manifesto";
 import { Nav } from "./components/Nav";
 import { Roadmap } from "./components/Roadmap";
-import { Services } from "./components/Services";
-import { Statement } from "./components/Statement";
+import { Showcase } from "./components/Showcase";
+import { Stats } from "./components/Stats";
 import { Ticker } from "./components/Ticker";
 import { BG, FG } from "./theme";
 
 export default function App() {
   return (
-    <div className="grain" style={{ background: BG, color: FG, minHeight: "100vh" }}>
+    <div style={{ background: BG, color: FG, minHeight: "100vh" }}>
+      <Cursor />
       <Nav />
       <main id="main">
         <Hero />
         <Ticker />
-        <Services />
-        <Statement />
+        <Departments />
+        <Stats />
+        <Showcase />
+        <Manifesto />
         <ComingSoon />
         <Roadmap />
         <Contact />

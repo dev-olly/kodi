@@ -1,11 +1,23 @@
+export const PHOTOS = {
+  hero: "/hero.jpg",
+  brand: "/brand.jpg",
+  digital: "/digital.jpg",
+  ads: "/ads.jpg",
+  prod: "/prod.jpg",
+  show1: "/show1.jpg",
+  show2: "/show2.jpg",
+  show3: "/show3.jpg",
+  contact: "/contact.jpg",
+} as const;
+
 export const SERVICES = [
   {
     num: "01",
     name: "Brand",
     slug: "brand",
+    photo: PHOTOS.brand,
     sub: "Identity that holds.",
-    count: 6,
-    body: "We build visual foundations — strategy, identity, guidelines, packaging — that give companies a language before they speak a word.",
+    body: "We build the visual systems that make companies unforgettable — strategy, identity, guidelines, and packaging that give brands a language before they speak a word.",
     items: [
       "Brand Strategy",
       "Logo Design",
@@ -19,9 +31,9 @@ export const SERVICES = [
     num: "02",
     name: "Digital",
     slug: "digital",
+    photo: PHOTOS.digital,
     sub: "Experiences worth navigating.",
-    count: 5,
-    body: "Websites, products, and interfaces designed so well they become the benchmark their competitors try to match.",
+    body: "Interfaces that feel inevitable. Websites, apps, and digital products designed so well they become the benchmark their competitors try to match.",
     items: [
       "Website Design & Dev",
       "Landing Pages",
@@ -34,9 +46,9 @@ export const SERVICES = [
     num: "03",
     name: "Advertising",
     slug: "advertising",
-    sub: "Campaigns that cut.",
-    count: 6,
-    body: "Creative direction and advertising design built for the real world — outdoor, digital, social, and everything in between.",
+    photo: PHOTOS.ads,
+    sub: "Campaigns that cut through.",
+    body: "From brief to billboard — we concept, direct, and design campaigns that earn attention in a world that ignores everything average.",
     items: [
       "Campaign Concepts",
       "Creative Direction",
@@ -50,14 +62,13 @@ export const SERVICES = [
     num: "04",
     name: "Production",
     slug: "production",
+    photo: PHOTOS.prod,
     sub: "The physical, perfected.",
-    count: 8,
-    body: "Print, packaging, signage, and large-format work managed end-to-end. We design it and we deliver it.",
+    body: "Print, packaging, signage — designed here, managed end to end. The real world deserves the same precision as the digital one.",
     items: [
       "Business Cards",
       "Brochures & Flyers",
       "Posters",
-      "Stickers & Labels",
       "Packaging",
       "Signage",
       "Large-Format Print",
@@ -74,17 +85,17 @@ export const COMING = [
       "DOOH Campaigns",
       "Transit Advertising",
       "Street-Pole Ads",
-      "Outdoor Planning",
+      "Outdoor Media Planning",
     ],
   },
   {
-    name: "Performance",
+    name: "Performance Ads",
     items: [
       "Meta Ads Management",
       "Google Ads",
       "TikTok Advertising",
       "YouTube Ads",
-      "Retargeting",
+      "Retargeting & Conversion",
     ],
   },
   {
@@ -94,41 +105,64 @@ export const COMING = [
       "Custom Rigid Boxes",
       "LED Installations",
       "Exhibition Stands",
-      "3D Signage",
+      "3D Architectural Signage",
     ],
   },
 ] as const;
 
 export const STAGES = [
   {
-    label: "Now",
+    phase: "Now",
     title: "Creative Agency",
     active: true,
-    services: ["Brand", "Digital", "Advertising Creative", "Production"],
+    svcs: ["Brand", "Digital", "Advertising", "Production"],
   },
   {
-    label: "Next",
+    phase: "Next",
     title: "Integrated Creative Agency",
     active: false,
-    services: ["Brand", "Digital", "Advertising", "Media Buying", "Outdoor", "Production"],
+    svcs: ["Brand", "Digital", "Advertising", "Media Buying", "Outdoor", "Production"],
   },
   {
-    label: "Future",
+    phase: "Future",
     title: "Creative + Media Company",
     active: false,
-    services: ["Brand", "Digital", "Advertising", "Media", "OOH / DOOH", "Production", "Technology"],
+    svcs: ["Brand", "Digital", "Advertising", "Media", "OOH/DOOH", "Production", "Technology"],
   },
 ] as const;
 
 export const NAV_LINKS = ["Brand", "Digital", "Advertising", "Production"] as const;
 
 export const TICKER_WORDS = [
+  "Kodi",
   "Brand Identity",
   "Digital Design",
   "Ad Campaigns",
   "Production",
-  "Strategy",
   "Creative Direction",
+  "Visual Systems",
   "Packaging",
-  "KODI",
+  "Strategy",
+  "Kodi",
+] as const;
+
+export const SHOWCASE = [
+  {
+    src: PHOTOS.show1,
+    label: "Editorial Campaign",
+    sublabel: "Advertising — 2024",
+    tall: true,
+  },
+  {
+    src: PHOTOS.show2,
+    label: "Luxury Packaging",
+    sublabel: "Brand — Production",
+    tall: false,
+  },
+  {
+    src: PHOTOS.show3,
+    label: "Creative Direction",
+    sublabel: "Digital — Studio",
+    tall: false,
+  },
 ] as const;

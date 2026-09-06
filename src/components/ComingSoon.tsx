@@ -1,137 +1,149 @@
 import { COMING } from "../data/content";
-import { BG, FG, GRAD, LINE, MUTED, sans, serif } from "../theme";
+import { useInView } from "../hooks/useInView";
+import { DIM, FG, LINE, MUTED, R, sans } from "../theme";
 
 export function ComingSoon() {
+  const [ref, inView] = useInView();
+
   return (
-    <section className="page-pad" style={{ padding: "120px 40px" }}>
-      <div className="section-inner" style={{ padding: 0 }}>
+    <section className="p48" style={{ background: "#060606", padding: "100px 48px" }}>
+      <div style={{ maxWidth: 1380, margin: "0 auto" }}>
         <div
+          ref={ref}
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            marginBottom: 72,
-            paddingBottom: 24,
+            paddingBottom: 20,
             borderBottom: `1px solid ${LINE}`,
+            marginBottom: 48,
+            opacity: inView ? 1 : 0,
+            transform: inView ? "none" : "translateY(20px)",
+            transition: "all .7s ease",
           }}
         >
           <h2
             style={{
-              fontFamily: serif,
-              fontSize: "clamp(30px, 4vw, 56px)",
+              fontFamily: sans,
+              fontWeight: 900,
+              fontSize: "clamp(28px,4vw,56px)",
+              letterSpacing: "-0.03em",
               color: FG,
               margin: 0,
-              letterSpacing: "-0.02em",
             }}
           >
-            Coming <em style={{ color: MUTED, fontStyle: "normal" }}>Soon.</em>
+            Coming <span style={{ color: DIM }}>Soon.</span>
           </h2>
           <span
             style={{
               fontFamily: sans,
               fontWeight: 300,
-              fontSize: 12,
-              color: MUTED,
-              letterSpacing: "0.1em",
+              fontSize: 11,
+              letterSpacing: ".2em",
               textTransform: "uppercase",
+              color: MUTED,
             }}
           >
-            In Development
+            Building now
           </span>
         </div>
-
-        <div className="coming-grid">
-          {COMING.map((dept, i) => (
-            <div
-              key={dept.name}
-              className="coming-card"
-              style={{
-                background: BG,
-                padding: "52px 44px",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 2,
-                  background: i === 0 ? GRAD : "transparent",
-                  opacity: i === 0 ? 1 : 0,
-                }}
-              />
-              <div
-                style={{
-                  fontFamily: sans,
-                  fontWeight: 500,
-                  fontSize: 11,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: MUTED,
-                  marginBottom: 20,
-                }}
-              >
-                {String(i + 5).padStart(2, "0")}
+        <div className="r3" style={{ gap: 2, background: LINE }}>
+          {COMING.map((dept) => (
+            <div key={dept.name} style={{ background: "#060606", padding: "48px 40px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
+                <span
+                  style={{
+                    fontFamily: sans,
+                    fontWeight: 700,
+                    fontSize: 9,
+                    letterSpacing: ".28em",
+                    textTransform: "uppercase",
+                    color: R,
+                    opacity: 0.45,
+                    border: "1px solid rgba(224,64,28,.2)",
+                    padding: "4px 10px",
+                  }}
+                >
+                  Classified
+                </span>
+                <div style={{ flex: 1, height: 1, background: LINE }} />
               </div>
               <h3
                 style={{
-                  fontFamily: serif,
-                  fontSize: 32,
+                  fontFamily: sans,
+                  fontWeight: 900,
+                  fontSize: "clamp(18px,2vw,28px)",
                   color: FG,
-                  opacity: 0.28,
-                  margin: "0 0 28px",
+                  opacity: 0.22,
+                  margin: "0 0 24px",
                   letterSpacing: "-0.01em",
                 }}
               >
                 {dept.name}
               </h3>
               <ul
-                style={{
-                  listStyle: "none",
-                  margin: 0,
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
+                className="cl-group"
+                style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}
               >
                 {dept.items.map((item) => (
                   <li
                     key={item}
                     style={{
+                      position: "relative",
                       fontFamily: sans,
                       fontWeight: 300,
                       fontSize: 13,
-                      color: "#3A3740",
+                      color: MUTED,
+                      lineHeight: 1.4,
                     }}
                   >
-                    {item}
+                    <span style={{ position: "relative" }}>
+                      {item}
+                      <span className="cl-bar" />
+                    </span>
                   </li>
                 ))}
               </ul>
-              <div
-                style={{
-                  marginTop: 36,
-                  display: "inline-block",
-                  fontFamily: sans,
-                  fontWeight: 500,
-                  fontSize: 10,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "#E0401C",
-                  opacity: 0.45,
-                  border: "1px solid rgba(224,64,28,0.2)",
-                  padding: "6px 12px",
-                }}
-              >
-                Building Now
+              <div style={{ marginTop: 36, display: "flex", alignItems: "center", gap: 8 }}>
+                <span
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: "50%",
+                    background: R,
+                    opacity: 0.35,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: sans,
+                    fontWeight: 300,
+                    fontSize: 10,
+                    letterSpacing: ".16em",
+                    textTransform: "uppercase",
+                    color: MUTED,
+                    opacity: 0.5,
+                  }}
+                >
+                  In development
+                </span>
               </div>
             </div>
           ))}
         </div>
+        <p
+          style={{
+            fontFamily: sans,
+            fontWeight: 300,
+            fontSize: 12,
+            color: MUTED,
+            marginTop: 18,
+            letterSpacing: ".02em",
+            opacity: 0.6,
+          }}
+        >
+          Hover a panel to reveal what&apos;s coming.
+        </p>
       </div>
     </section>
   );

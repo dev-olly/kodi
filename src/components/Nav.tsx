@@ -8,7 +8,7 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -17,41 +17,42 @@ export function Nav() {
     <header
       style={{
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 200,
-        transition: "all 0.4s",
-        borderBottom: scrolled ? `1px solid ${LINE}` : "1px solid transparent",
-        background: scrolled ? "rgba(6,6,10,0.92)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
+        inset: "0 0 auto",
+        zIndex: 500,
+        transition: "background .4s,border-color .4s",
+        background: scrolled ? "rgba(9,9,9,.94)" : "transparent",
+        backdropFilter: scrolled ? "blur(22px)" : "none",
+        borderBottom: `1px solid ${scrolled ? LINE : "transparent"}`,
       }}
     >
       <div
-        className="section-inner"
+        className="p48"
         style={{
-          height: 68,
+          maxWidth: 1380,
+          margin: "0 auto",
+          padding: "0 48px",
+          height: 66,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
-        <a href="#" style={{ textDecoration: "none" }} aria-label="Kodi home">
-          <KodiLogo size={22} />
+        <a href="#" style={{ textDecoration: "none" }} aria-label="Kodi home" data-h="1">
+          <KodiLogo size={21} />
         </a>
-        <nav className="nav-desktop" aria-label="Primary">
+        <nav className="nd" aria-label="Primary">
           {NAV_LINKS.map((link) => (
             <a
               key={link}
               href={`#${link.toLowerCase()}`}
+              data-h="1"
               style={{
                 fontFamily: sans,
                 fontWeight: 400,
                 fontSize: 13,
                 color: MUTED,
                 textDecoration: "none",
-                letterSpacing: "0.01em",
-                transition: "color 0.2s",
+                transition: "color .2s",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
               onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
@@ -61,19 +62,19 @@ export function Nav() {
           ))}
           <a
             href="#contact"
-            className="grad-bg"
+            data-h="1"
             style={{
               fontFamily: sans,
               fontWeight: 600,
               fontSize: 12,
-              letterSpacing: "0.06em",
+              letterSpacing: ".08em",
               background: GRAD,
               color: "#fff",
-              padding: "10px 22px",
+              padding: "11px 24px",
               textDecoration: "none",
-              transition: "opacity 0.2s",
+              transition: "opacity .2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.82")}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = ".8")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
             Start a Project
@@ -81,7 +82,8 @@ export function Nav() {
         </nav>
         <button
           type="button"
-          className="nav-mobile-btn"
+          className="nm"
+          data-h="1"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -95,7 +97,7 @@ export function Nav() {
                   display: "block",
                   height: 1,
                   background: FG,
-                  transition: "all 0.2s",
+                  transition: "all .22s",
                   transform:
                     open && i === 0
                       ? "rotate(45deg) translateY(6px)"
@@ -112,13 +114,14 @@ export function Nav() {
       {open && (
         <div
           id="mobile-nav"
+          className="p48"
           style={{
+            background: "rgba(9,9,9,.97)",
             borderTop: `1px solid ${LINE}`,
-            padding: "28px 40px",
+            padding: "28px 48px 36px",
             display: "flex",
             flexDirection: "column",
-            gap: 20,
-            background: "rgba(6,6,10,0.97)",
+            gap: 22,
           }}
         >
           {NAV_LINKS.map((link) => (
@@ -126,9 +129,11 @@ export function Nav() {
               key={link}
               href={`#${link.toLowerCase()}`}
               onClick={() => setOpen(false)}
+              data-h="1"
               style={{
                 fontFamily: sans,
-                fontSize: 14,
+                fontWeight: 400,
+                fontSize: 15,
                 color: MUTED,
                 textDecoration: "none",
               }}
@@ -139,13 +144,14 @@ export function Nav() {
           <a
             href="#contact"
             onClick={() => setOpen(false)}
+            data-h="1"
             style={{
               fontFamily: sans,
               fontWeight: 600,
               fontSize: 13,
               background: GRAD,
               color: "#fff",
-              padding: "14px 22px",
+              padding: "14px 24px",
               textDecoration: "none",
               textAlign: "center",
               marginTop: 8,

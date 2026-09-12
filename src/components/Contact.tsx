@@ -35,7 +35,7 @@ type FormState = {
 
 const empty: FormState = { name: "", email: "", department: "", brief: "" };
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_FORM_ID || "xvkojplz";
+const FORMSPREE_ID = import.meta.env.Formspree_form_id || "xvkojplz";
 const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
 function validate(values: FormState) {

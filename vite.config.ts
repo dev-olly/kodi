@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "node:path";
 
 export default defineConfig({
+  envPrefix: ["VITE_", "Formspree_"],
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

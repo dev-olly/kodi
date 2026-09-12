@@ -35,6 +35,9 @@ type FormState = {
 
 const empty: FormState = { name: "", email: "", department: "", brief: "" };
 
+const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_FORM_ID || "xvkojplz";
+const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
 function validate(values: FormState) {
   const errors: Partial<FormState> = {};
   if (!values.name.trim()) errors.name = "Please enter your name.";
@@ -61,12 +64,48 @@ export function Contact() {
   const [values, setValues] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [gotcha, setGotcha] = useState("");
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const next = validate(values);
     setErrors(next);
-    if (Object.keys(next).length === 0) setSubmitted(true);
+    setSubmitError("");
+    if (Object.keys(next).length > 0) return;
+    if (gotcha) return;
+
+    setSending(true);
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          department: values.department,
+          brief: values.brief.trim(),
+          _subject: `Kodi brief — ${values.department}`,
+          _gotcha: gotcha,
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        return;
+      }
+
+      const data = (await res.json().catch(() => null)) as { errors?: { message?: string }[] } | null;
+      setSubmitError(
+        data?.errors?.map((err) => err.message).filter(Boolean).join(" ") ||
+          "Something went wrong. Please try again or email kodilonltd@gmail.com.",
+      );
+    } catch {
+      setSubmitError("Could not send. Check your connection and try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -145,7 +184,7 @@ export function Contact() {
                 }}
               >
                 <a
-                  href="mailto:hello@kodi.studio"
+                  href="mailto:kodilonltd@gmail.com"
                   data-h="1"
                   style={{
                     fontFamily: sans,
@@ -158,10 +197,10 @@ export function Contact() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
                   onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
                 >
-                  hello@kodi.studio
+                  kodilonltd@gmail.com
                 </a>
                 <a
-                  href="tel:+15550000000"
+                  href="tel:+2347042033531"
                   data-h="1"
                   style={{
                     fontFamily: sans,
@@ -174,7 +213,7 @@ export function Contact() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = FG)}
                   onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
                 >
-                  +1 (555) 000-0000
+                  +234 704 203 3531
                 </a>
               </div>
             </div>
@@ -319,6 +358,21 @@ export function Contact() {
                 )}
               </label>
 
+              <label
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}
+              >
+                Website
+                <input
+                  type="text"
+                  name="_gotcha"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={gotcha}
+                  onChange={(e) => setGotcha(e.target.value)}
+                />
+              </label>
+
               <label style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 <span style={LABEL}>Brief</span>
                 <textarea
@@ -341,9 +395,16 @@ export function Contact() {
                 )}
               </label>
 
+              {submitError && (
+                <span className="field-error" role="alert">
+                  {submitError}
+                </span>
+              )}
+
               <button
                 type="submit"
                 data-h="1"
+                disabled={sending}
                 style={{
                   fontFamily: sans,
                   fontWeight: 700,
@@ -356,11 +417,17 @@ export function Contact() {
                   border: "none",
                   marginTop: 4,
                   transition: "opacity .2s",
+                  opacity: sending ? 0.7 : 1,
+                  cursor: sending ? "wait" : "pointer",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = ".8")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                onMouseEnter={(e) => {
+                  if (!sending) e.currentTarget.style.opacity = ".8";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = sending ? "0.7" : "1";
+                }}
               >
-                Send Brief →
+                {sending ? "Sending…" : "Send Brief →"}
               </button>
             </form>
           )}
